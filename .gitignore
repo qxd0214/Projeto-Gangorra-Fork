@@ -88,3 +88,8 @@ dkms.conf
 build/
 .vscode/
 .devcontainer/
+
+# espressif dirs
+build/
+.vscode/
+.devcontainer/
