@@ -34,7 +34,7 @@ export function BLEProvider({ children }) {
         return false;
       }
 
-      if (scannedDevice && scannedDevice.name === 'BLE_DEMO_ESP32') {
+      if (scannedDevice && scannedDevice.name === 'BALANCO DIDATICO') {
 
         BLTManager.stopDeviceScan();
 
