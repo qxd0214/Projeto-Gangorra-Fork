@@ -2,17 +2,6 @@ import { createContext, useState } from 'react'
 import { showMessage } from "react-native-flash-message";
 import base64 from 'react-native-base64';
 import { BleManager } from 'react-native-ble-plx';
-import { requestAccessFineLocation } from '../utils/permissions-android';
-/* import { 
-  //CHARACTERISTIC_ANGLE_CONTROL_UUID,
-  CHARACTERISTIC_D_CONTROL_UUID,
-  CHARACTERISTIC_I_CONTROL_UUID,
-  CHARACTERISTIC_P_CONTROL_UUID,
-  CHARACTERISTIC_SELECT_MODE_UUID,
-  //SERVICE_ANGLE_CONTROL_UUID,
-  SERVICE_PID_CONTROL_UUID, 
-  SERVICE_SELECT_MODE_UUID
-} from '../utils/constants'; */
 
 import { bleConstants } from '../utils/constants';
 
@@ -26,20 +15,6 @@ export function BLEProvider({ children }) {
   const [connectedDevice, setConnectedDevice] = useState(null);
 
   async function scanDevices() {
-
-   /* const canAccessFineLocation = await requestAccessFineLocation()
-    
-    console.log('Scanning devices after...');
-    if (!canAccessFineLocation) {
-      showMessage({
-        message: "Permissão negada!",
-        description: "Você precisa permitir o acesso a localização para continuar.",
-        duration: 5000,
-        type: 'danger'
-      });
-      return;
-    }  */
-
     showMessage({
       message: "Procurando por dispositivos...",
       duration: 3000,
@@ -73,12 +48,7 @@ export function BLEProvider({ children }) {
 
         return true;
       }
-    })
-
-    /* setTimeout(() => {
-      BLTManager.stopDeviceScan();
-    }, 5000); */
-
+    });
   }
 
   //Connect the device and start monitoring characteristics
