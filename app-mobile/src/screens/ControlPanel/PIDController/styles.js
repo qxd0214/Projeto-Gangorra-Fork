@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import { ContainerControllerBase, ControllerTextBase } from '../styles'
 
 export const ContainerPIDController = styled(ContainerControllerBase)`
-  height: 353px;
+  height: 280px;
 `
 
 export const PIDControllerText = styled(ControllerTextBase)``

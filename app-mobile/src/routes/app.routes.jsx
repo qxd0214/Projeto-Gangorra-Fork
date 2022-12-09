@@ -27,7 +27,7 @@ export function Routes(){
         options={{
           headerShown: false,
         }}
-      />
+      /> 
       <App.Screen
         name="control-panel"
         component={ControlPanel}

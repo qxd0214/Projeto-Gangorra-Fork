@@ -1,17 +1,13 @@
 import { ActivityIndicator } from 'react-native'
 import * as S from './styles';
 
-export function PIDController({ 
+export function PIDController({
   isFreeMode,
   pidValue,
-  handleClearPid,
   onChangePidValue,
   handlePValueControl,
   handleIValueControl,
   handleDValueControl,
-  pControlLoading,
-  iControlLoading,
-  dControlLoading,
 }) {
   return (
     <S.ContainerPIDController isDisabled={!isFreeMode}>
@@ -30,12 +26,7 @@ export function PIDController({
           disabled={!isFreeMode}
           onPress={handlePValueControl}
         >
-          {pControlLoading ? (
-            <ActivityIndicator size="small" color="#FFFFFF" />
-          ) : (
-            <S.ButtonSubmitText>Enviar</S.ButtonSubmitText>
-            )
-          }
+          <S.ButtonSubmitText>Enviar</S.ButtonSubmitText>
         </S.ButtonSubmit>
       </S.GroupField>
 
@@ -52,12 +43,7 @@ export function PIDController({
           disabled={!isFreeMode}
           onPress={handleIValueControl}
         >
-          {iControlLoading ? (
-            <ActivityIndicator size="small" color="#FFFFFF" />
-          ) : (
-            <S.ButtonSubmitText>Enviar</S.ButtonSubmitText>
-            )
-          }
+          <S.ButtonSubmitText>Enviar</S.ButtonSubmitText>
         </S.ButtonSubmit>
       </S.GroupField>
 
@@ -74,21 +60,16 @@ export function PIDController({
           disabled={!isFreeMode}
           onPress={handleDValueControl}
         >
-          {dControlLoading ? (
-            <ActivityIndicator size="small" color="#FFFFFF" />
-          ) : (
-            <S.ButtonSubmitText>Enviar</S.ButtonSubmitText>
-            )
-          }
+          <S.ButtonSubmitText>Enviar</S.ButtonSubmitText>
         </S.ButtonSubmit>
       </S.GroupField>
 
-      <S.ButtonClear
+      {/* <S.ButtonClear
         disabled={!isFreeMode}
         onPress={handleClearPid}
       >
         <S.ButtonClearText>Limpar</S.ButtonClearText>
-      </S.ButtonClear>
+      </S.ButtonClear> */}
     </S.ContainerPIDController>
   )
 }

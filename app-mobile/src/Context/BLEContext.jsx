@@ -73,14 +73,13 @@ export function BLEProvider({ children }) {
       const allServicesAndCharacteristicsOfDeviceConnected = await connectedDevice.discoverAllServicesAndCharacteristics();
       
       const [ 
-        service1,
-        service2,
+        serviceDefaultOne,
+        serviceDefaultTwo,
         serviceAngle,
         servicePControl,
         serviceIControl,
         serviceDControl,
         serviceSelectMode,
-        serviceSelectSensor
       ]= await connectedDevice.services()
       
       bleConstants.setServiceAngleControlUuid(serviceAngle.uuid);
@@ -88,7 +87,6 @@ export function BLEProvider({ children }) {
       bleConstants.setServiceIControlUuid(serviceIControl.uuid);
       bleConstants.setServiceDControlUuid(serviceDControl.uuid);
       bleConstants.setServiceSelectModeUuid(serviceSelectMode.uuid);
-      bleConstants.setServiceSelectSensorUuid(serviceSelectSensor.uuid);
 
       BLTManager.characteristicsForDevice(
         connectedDevice.id,
@@ -114,12 +112,6 @@ export function BLEProvider({ children }) {
         connectedDevice.id,
         bleConstants.getServiceSelectModeUuid()
       ).then((characteristics) => bleConstants.setCharacteristicSelectModeUuid(characteristics[0].uuid))
-
-      BLTManager.characteristicsForDevice(
-        connectedDevice.id,
-        bleConstants.getServiceSelectSensorUuid()
-      ).then((characteristics) => bleConstants.setCharacteristicSelectSensorUuid(characteristics[0].uuid))
-
 
       BLTManager.onDeviceDisconnected(
         allServicesAndCharacteristicsOfDeviceConnected.id, (error, device) => {
@@ -153,21 +145,7 @@ export function BLEProvider({ children }) {
     }
   }
 
-  async function writeCharacteristicSelectSensorValue(value) {
-    if (connectedDevice) {
-      await connectedDevice.writeCharacteristicWithResponseForService(
-        bleConstants.getServiceSelectSensorUuid(),
-        bleConstants.getCharacteristicSelectSensorUuid(),
-        base64.encode(value.toString()),
-      );
-
-      return true;
-    }
-
-    return false;
-  }
-
-  async function writeCharacteristicSelectModeValue(value) {
+  async function writeCharacteristicSelectModeAndSensorValue(value) {
     if (connectedDevice) {
       await connectedDevice.writeCharacteristicWithResponseForService(
         bleConstants.getServiceSelectModeUuid(),
@@ -245,8 +223,7 @@ export function BLEProvider({ children }) {
         writeCharacteristicOfIControlValue,
         writeCharacteristicOfDControlValue,
         writeCharacteristicAngleControlValue,
-        writeCharacteristicSelectModeValue,
-        writeCharacteristicSelectSensorValue
+        writeCharacteristicSelectModeAndSensorValue,
       }}
     >
       {children}

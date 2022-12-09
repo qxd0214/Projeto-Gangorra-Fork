@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { showMessage } from "react-native-flash-message";
-import { Switch, Alert } from 'react-native'
+import { Switch } from 'react-native';
 
 import { PIDController } from './PIDController';
 import { AngleController } from './AngleController';
@@ -9,9 +9,8 @@ import { useBLE } from '../../hooks/useBLE';
 
 const ACCELEROMETER_SENSOR_ID = '0'
 const ULTRASONIC_SENSOR_ID = '1'
-
-const FREE_MODE_ID = '0'
-const DEFAULT_MODE_ID = '1'
+const FREE_MODE_ID = '2'
+const DEFAULT_MODE_ID = '3'
 
 export function ControlPanel({ navigation }) {
   const {
@@ -19,13 +18,12 @@ export function ControlPanel({ navigation }) {
     writeCharacteristicOfIControlValue,
     writeCharacteristicOfDControlValue,
     writeCharacteristicAngleControlValue,
-    writeCharacteristicSelectModeValue,
-    writeCharacteristicSelectSensorValue,
+    writeCharacteristicSelectModeAndSensorValue,
     isConnected,
   } = useBLE()
 
 
-  const [isFreeMode, setIsFreeMode] = useState(false);
+  const [isFreeMode, setIsFreeMode] = useState(true);
   const [isAccelerometerSensor, setIsAccelerometerSensor] = useState(true);
   const [isFirstRender, seIsFirstRender] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
@@ -85,9 +83,9 @@ export function ControlPanel({ navigation }) {
       let isSuccess;
 
       if(isAccelerometer){
-        isSuccess = await writeCharacteristicSelectSensorValue(ULTRASONIC_SENSOR_ID);
+        isSuccess = await writeCharacteristicSelectModeAndSensorValue(ULTRASONIC_SENSOR_ID);
       }else {
-        isSuccess = await writeCharacteristicSelectSensorValue(ACCELEROMETER_SENSOR_ID);
+        isSuccess = await writeCharacteristicSelectModeAndSensorValue(ACCELEROMETER_SENSOR_ID);
       }
 
       if (isSuccess) {
@@ -123,9 +121,9 @@ export function ControlPanel({ navigation }) {
       let isSuccess;
 
       if(isFreeMode){
-        isSuccess = await writeCharacteristicSelectModeValue(DEFAULT_MODE_ID);
+        isSuccess = await writeCharacteristicSelectModeAndSensorValue(DEFAULT_MODE_ID);
       }else {
-        isSuccess = await writeCharacteristicSelectModeValue(FREE_MODE_ID);
+        isSuccess = await writeCharacteristicSelectModeAndSensorValue(FREE_MODE_ID);
       }
 
       if (isSuccess) {
@@ -324,9 +322,6 @@ export function ControlPanel({ navigation }) {
         handlePValueControl={handlePValueControl}
         handleIValueControl={handleIValueControl}
         handleDValueControl={handleDValueControl}
-      /* pControlLoading={pControlLoading}
-      iControlLoading={iControlLoading}
-      dControlLoading={dControlLoading} */
       />
 
       <AngleController
@@ -335,7 +330,6 @@ export function ControlPanel({ navigation }) {
         onChangeSliderValue={onChangeSliderValue}
         handleAngleControl={handleAngleControl}
         handleClearAngle={handleClearAngle}
-      /* angleControlLoading={angleControlLoading} */
       />
 
     </S.Container>
