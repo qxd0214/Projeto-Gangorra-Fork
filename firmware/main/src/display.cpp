@@ -1,5 +1,9 @@
 #include "display.hpp"
-#include "delay.h"
+
+#include "delay.hpp"
+
+#include "lcd.hpp"
+
 static lcd_handler_t lcdHandler;
 
 const uint8_t null_char[] = {

@@ -1,7 +1,8 @@
-#include "lcd.h"
+#include "lcd.hpp"
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "delay.h"
+#include "delay.hpp"
 
 // ==========================================================================
 // LCD INSTRUCTION CODES
@@ -274,8 +275,7 @@ void lcdEnablePulse(lcd_handler_t *lcd) {
 	gpio_set_level(lcd->en, 1);
 
 	// WAIT 1us
-     vDelayMs(1);
-	// for(int i = 0; i < 10000; i++);
+	for(int i = 0; i < 8500; i++);
 
 	// LOGIC 0 IN EN
 	gpio_set_level(lcd->en, 0);

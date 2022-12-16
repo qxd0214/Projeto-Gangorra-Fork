@@ -1,9 +1,9 @@
-#ifndef LCD_H
-#define LCD_H
+#ifndef LCD_HPP
+#define LCD_HPP
 
 #include "driver/gpio.h"
 
-typedef enum {
+enum lcd_custom_char {
 	lcdCUSTOM_CHAR_1,
 	lcdCUSTOM_CHAR_2,
 	lcdCUSTOM_CHAR_3,
@@ -12,13 +12,13 @@ typedef enum {
 	lcdCUSTOM_CHAR_6,
 	lcdCUSTOM_CHAR_7,
 	lcdCUSTOM_CHAR_8
-} lcd_custom_char;
+};
 
-typedef struct {
+struct lcd_handler_t {
 	gpio_num_t data[4];
 	gpio_num_t rs;
 	gpio_num_t en;
-} lcd_handler_t;
+};
 
 extern void lcdInitModule(lcd_handler_t *lcd);
 

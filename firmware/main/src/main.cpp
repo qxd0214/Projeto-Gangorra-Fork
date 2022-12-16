@@ -19,7 +19,6 @@
 // =============================================================================
 static xSemaphoreHandle angleMutex;
 static xSemaphoreHandle settingsMutex;
-static bool updateDisplay = true;
 
 // =============================================================================
 // FREE FUNCTIONS PROTOTYPES
@@ -44,7 +43,7 @@ static void vTaskSensor(void *pvParameters) {
     while(true) {
         xSemaphoreTake(angleMutex, portMAX_DELAY);
         xSemaphoreTake(settingsMutex, portMAX_DELAY);
-        (xGetCurrentSettings()->currentSensor == ULTRASONIC_SENSOR) ? fReadUltrasonicSensor() : fReadAccelerometerSensor();
+        (xGetCurrentSensor() == ULTRASONIC_SENSOR) ? fReadUltrasonicSensor() : fReadAccelerometerSensor();
         xSemaphoreGive(settingsMutex);
         xSemaphoreGive(angleMutex);
         vTaskDelay(50/portTICK_PERIOD_MS);
@@ -63,15 +62,10 @@ static void vTaskMotors(void *pvParameters) {
 }
 
 static void vTaskBluetooth(void *pvParameters) {
-    BluetoothHandle handle;
     while(true) {
         xSemaphoreTake(settingsMutex, portMAX_DELAY);
-        if (xGetCurrentSettings()->currentMode == DISCONNECTED_MODE) {
-            vAwaitBluetoothConnection(&handle);
-        }
-        else {
-            vReceiveBluetoothData(&handle);
-            // updateDisplay = true;
+        if (xGetCurrentMode() != DISCONNECTED_MODE) {
+            vReceiveBluetoothData();
         }
         xSemaphoreGive(settingsMutex);
         vTaskDelay(300/portTICK_PERIOD_MS);
@@ -79,30 +73,32 @@ static void vTaskBluetooth(void *pvParameters) {
 }
 
 static void vTaskDisplay(void *pvParameters) {
+    vClearDisplay();
+    vSetDisplayCursor(0, 0);
+    vDisplayWriteString("Angulacao: ");
+
     char angleString[16];
     while(true) {
-        if(updateDisplay) {
-            vClearDisplay();
-            vSetDisplayCursor(0, 0);
-            vDisplayWriteString("Angulacao: ");
+        if(bCheckModeUpdate()) {
+            vEraseDisplayCells(1, 2, 15);
             vSetDisplayCursor(1, 2);
-            switch(xGetCurrentSettings()->currentMode) {
-                case MANUAL_MODE:
-                    vDisplayWriteString("Modo: Manual");
-                    break;
-                case DEFAULT_MODE:
-                    vDisplayWriteString("Modo: Livre");
-                    break;
+            switch(xGetCurrentMode()) {
                 case DISCONNECTED_MODE:
                     vDisplayWriteString("Desconectado");
                     break;
+                case DEFAULT_MODE:
+                    vDisplayWriteString("Modo: Padrao");
+                    break;
+                case FREE_MODE:
+                    vDisplayWriteString("Modo: Livre");
+                    break;
             }
-            updateDisplay = false;
         }
         vEraseDisplayCells(0, 11, 15);
         vSetDisplayCursor(0, 11);
 
-        float angle = fGetCurrentAngle();
+        // float angle = fGetCurrentAngle();
+        float angle = fGetReferenceAngle();
         sprintf(angleString, "%.1f", angle);
         if(angle > 0) {
             vDisplayWriteChar('+');

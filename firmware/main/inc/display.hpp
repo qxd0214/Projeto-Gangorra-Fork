@@ -1,9 +1,7 @@
 #ifndef DISPLAY_HPP
 #define DISPLAY_HPP
 
-#include "lcd.h"
-
-#define LCD_DEGREE_CHAR lcdCUSTOM_CHAR_2
+#include <stdint.h>
 
 extern void vInitDisplay(void);
 

@@ -3,12 +3,8 @@
 
 #include "system.hpp"
 
-using BluetoothHandle = void*;
-
 extern void vInitBluetooth(void);
 
-extern void vAwaitBluetoothConnection(BluetoothHandle *handle);
-
-extern void vReceiveBluetoothData(BluetoothHandle *handle);
+extern void vReceiveBluetoothData(void);
 
 #endif

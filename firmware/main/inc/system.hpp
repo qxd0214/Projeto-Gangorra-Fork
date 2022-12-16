@@ -1,36 +1,58 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
-enum Sensor {
+typedef enum {
      ACCELEROMETER_SENSOR,
      ULTRASONIC_SENSOR
-};
+} Sensor;
 
-enum Mode {
-     MANUAL_MODE,
+typedef enum {
+     DISCONNECTED_MODE,
      DEFAULT_MODE,
-     DISCONNECTED_MODE
-};
+     FREE_MODE
+} Mode;
 
-struct PID {
+typedef struct {
      float P;
      float I;
      float D;
-};
+} PID;
 
-struct SystemSettings {
+typedef struct {
      PID pid;
      float referenceAngle;
      Mode currentMode;
      Sensor currentSensor;
-};
+} SystemSettings;
 
-extern SystemSettings *xGetCurrentSettings(void);
-
-extern void vSetCurrentSettings(SystemSettings *settings);
+extern bool bCheckModeUpdate(void);
 
 extern void vComponentsInit(void);
 
 extern void vStartupScreen(void);
+
+extern float fGetReferenceAngle(void);
+
+extern float fGetPidThermP(void);
+
+extern float fGetPidThermI(void);
+
+extern float fGetPidThermD(void);
+
+extern Sensor xGetCurrentSensor(void);
+
+extern Mode xGetCurrentMode(void);
+
+extern void vSetReferenceAngle(float referenceAngle);
+
+extern void vSetPidThermP(float P);
+
+extern void vSetPidThermI(float I);
+
+extern void vSetPidThermD(float D);
+
+extern void vSetCurrentSensor(Sensor currentSensor);
+
+extern void vSetCurrentMode(Mode currentMode);
 
 #endif
